@@ -64,10 +64,16 @@ void printStack(const Node* top, FILE* f, int hr) {
             for (int i = 0; i < top->info.depth; i++)
                 fprintf(f, "\t");
             if (stat(top->info.name, &dirStat) == 0) {
+                char *dir_name = strrchr(top->info.name, '/');
+                if (dir_name) 
+                    dir_name++;
+                else 
+                    dir_name = top->info.name;
+
                 if (hr)
-                    fprintf(f, "%ldK %s\n", dirStat.st_size / 1024, strrchr(top->info.name, '/') + 1);
+                    fprintf(f, "%ldK %s\n", dirStat.st_size / 1024, dir_name);
                 else
-                    fprintf(f, "%ld %s\n", dirStat.st_size, strrchr(top->info.name, '/') + 1);
+                    fprintf(f, "%ld %s\n", dirStat.st_size, dir_name);
             }
         }
         // Print the file list for the directory (including for the root).
